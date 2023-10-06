@@ -1,4 +1,4 @@
-import { Search2Icon } from "@chakra-ui/icons";
+import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -7,11 +7,16 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import { TableComponent, TableOptions } from "../../components/table";
 import { useEffect, useState } from "react";
 import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
+import ModalEtapas from "./modalEtapas";
 
 export default function FunilHome() {
   const [uuid, setUuid] = useState("");
@@ -32,7 +37,7 @@ export default function FunilHome() {
       { headerOption: "Nome", listOption: "nomeFunil" },
       { headerOption: "Qtd  de integrações", listOption: "qtdIntegracoes" },
       { headerOption: "Ativo", listOption: "ativo" },
-      { headerOption: "Qtd Etapas", listOption: "qtdEtapas" },
+      { headerOption: "Qtd Etapas", listOption: "quantidadeEtapas" },
       { headerOption: "Campanha", listOption: "nomeCampanha" },
       { headerOption: "Padrão", listOption: "padrao" },
     ],
@@ -47,6 +52,7 @@ export default function FunilHome() {
     } else {
       API.get("/funil?offset=" + pagina).then((response) => {
         setFunis(response.data);
+        console.log(response.data);
       });
     }
   }
@@ -64,9 +70,20 @@ export default function FunilHome() {
                 <Button colorScheme="blue" variant={"outline"} mx={"6"}>
                   Editar
                 </Button>
-                <Button colorScheme="red" variant={"outline"}>
+                <Button colorScheme="red" variant={"outline"} mr={"6"}>
                   Excluir
                 </Button>
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                    Mais ações
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      <ModalEtapas uuid={uuid} />
+                    </MenuItem>
+                    <MenuItem>Integrações</MenuItem>
+                  </MenuList>
+                </Menu>
               </Box>
               <Box display={"flex"} alignItems={"center"}>
                 <Box mr={"5"}>
