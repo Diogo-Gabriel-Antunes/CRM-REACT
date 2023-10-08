@@ -10,10 +10,12 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import API from "../../../API";
 import { TableComponent, TableOptions } from "../../../components/table";
+import ModalAdicionarEtapas from "./adicionarEtapas";
 
 interface Props {
   uuid?: string;
@@ -24,6 +26,7 @@ export default function ModalEtapas({ uuid }: Props) {
   const [etapas, setEtapas] = useState([]);
   const [uuidEtapas, setUuidEtapas] = useState("");
   const [pagina, setPagina] = useState(0);
+  const toast = useToast();
 
   const getEtapas = () => {
     API.get("/etapa-funil?funilUuid=" + uuid!).then((response) => {
@@ -61,7 +64,20 @@ export default function ModalEtapas({ uuid }: Props) {
 
   return (
     <>
-      <Box onClick={onOpen} w={"full"}>
+      <Box
+        onClick={() => {
+          if (uuid) {
+            onOpen();
+          } else {
+            toast({
+              duration: 3000,
+              description: "Necessario selecionar um funil",
+              colorScheme: "red",
+            });
+          }
+        }}
+        w={"full"}
+      >
         Etapas
       </Box>
 
@@ -71,6 +87,14 @@ export default function ModalEtapas({ uuid }: Props) {
           <ModalHeader>Etapas</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Box display={"flex"}>
+              <ModalAdicionarEtapas funilSelected={uuid!} />
+              <ModalAdicionarEtapas
+                funilSelected={uuid!}
+                etapaUuid={uuidEtapas}
+                editar
+              />
+            </Box>
             <TableComponent
               pagina={pagina}
               props={tableStructure}
