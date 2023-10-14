@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import API from "../../../API";
 import { TableComponent, TableOptions } from "../../../components/table";
 import ModalAdicionarEtapas from "./adicionarEtapas";
+import { getegid } from "process";
 
 interface Props {
   uuid?: string;
@@ -92,8 +93,44 @@ export default function ModalEtapas({ uuid }: Props) {
               <ModalAdicionarEtapas
                 funilSelected={uuid!}
                 etapaUuid={uuidEtapas}
+                setEtapaUuid={setUuidEtapas}
                 editar
               />
+              <Button colorScheme="teal" w={"full"}>
+                Ativar/Desativar
+              </Button>
+              <Button
+                colorScheme="red"
+                w={"full"}
+                onClick={() => {
+                  if (!uuidEtapas) {
+                    toast({
+                      duration: 3000,
+                      colorScheme: "red",
+                      description: "Selecione uma etapa",
+                    });
+                    return;
+                  }
+                  API.delete(`/etapa-funil/${uuidEtapas}`)
+                    .then(() => {
+                      toast({
+                        duration: 3000,
+                        description: "Deletado com sucesso",
+                        colorScheme: "green",
+                      });
+                      getEtapas();
+                    })
+                    .catch(() => {
+                      toast({
+                        duration: 3000,
+                        description: "Erro na exclusão verifique novamente",
+                        colorScheme: "red",
+                      });
+                    });
+                }}
+              >
+                Excluir
+              </Button>
             </Box>
             <TableComponent
               pagina={pagina}

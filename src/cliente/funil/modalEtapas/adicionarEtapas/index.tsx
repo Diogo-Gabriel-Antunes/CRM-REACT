@@ -11,13 +11,15 @@ import {
   ModalOverlay,
   Select,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import API from "../../../../API";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 interface Props {
   funilSelected: string;
   etapaUuid?: string;
+  setEtapaUuid?: React.Dispatch<SetStateAction<string>>;
   editar?: boolean;
 }
 
@@ -25,9 +27,10 @@ export default function ModalAdicionarEtapas({
   funilSelected,
   etapaUuid,
   editar,
+  setEtapaUuid,
 }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const [nomeEtapa, setNomeEtapa] = useState("");
   const [nivel, setNivel] = useState("");
   const [finalizacao, setFinalizacao] = useState("");
@@ -44,11 +47,21 @@ export default function ModalAdicionarEtapas({
 
     if (editar) {
       API.put("/etapa-funil/" + etapaUuid, dto).then((response) => {
-        console.log(response);
+        toast({
+          duration: 3000,
+          title: "Etapa Atualizada com sucesso",
+          description: "Atualiza a lista",
+          colorScheme: "green",
+        });
       });
     } else {
       API.post("/etapa-funil", dto).then((response) => {
-        console.log(response);
+        toast({
+          duration: 3000,
+          title: "Etapa Cadastrada com sucesso",
+          description: "Atualiza a lista",
+          colorScheme: "green",
+        });
       });
     }
   };
@@ -61,7 +74,11 @@ export default function ModalAdicionarEtapas({
         onClick={() => {
           if (editar && etapaUuid) {
             API.get(`/etapa-funil/${etapaUuid}`).then((response) => {
-              console.log(response);
+              onOpen();
+              setNomeEtapa(response.data.etapa);
+              setNivel(response.data.nivel);
+              setFinalizacao(response.data.finalizacao);
+              setEtapaUuid!(`${response.data.uuid}`);
             });
           } else {
             onOpen();
@@ -84,6 +101,7 @@ export default function ModalAdicionarEtapas({
                   <Box display={"flex"}>
                     <Box display={"flex"} flexDir={"column"} mr={"10"}>
                       <Input
+                        value={nomeEtapa}
                         variant={"flushed"}
                         placeholder="Nome Etapa"
                         w={"full"}
@@ -98,6 +116,7 @@ export default function ModalAdicionarEtapas({
                       <Select
                         placeholder="Nivel"
                         mb={"5"}
+                        value={nivel}
                         onChange={(e) => setNivel(e.target.value)}
                       >
                         <option value={1}>1</option>
@@ -114,6 +133,7 @@ export default function ModalAdicionarEtapas({
                       <Select
                         placeholder="Finalização"
                         onChange={(e) => setFinalizacao(e.target.value)}
+                        value={finalizacao}
                       >
                         <option></option>
                         <option value={"true"}>Sim</option>
