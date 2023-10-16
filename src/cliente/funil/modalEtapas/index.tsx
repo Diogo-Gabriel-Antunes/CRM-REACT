@@ -35,6 +35,42 @@ export default function ModalEtapas({ uuid }: Props) {
     });
   };
 
+  const alterarStatus = () => {
+    API.put(`/etapa-funil/alterar-ativo/${uuidEtapas}`).then((response) => {
+      toast({
+        duration: 3000,
+        description: "Alterado com sucesso",
+        colorScheme: "green",
+      });
+    });
+  };
+
+  const excluir = () => {
+    if (!uuidEtapas) {
+      toast({
+        duration: 3000,
+        colorScheme: "red",
+        description: "Selecione uma etapa",
+      });
+      return;
+    }
+    API.delete(`/etapa-funil/${uuidEtapas}`)
+      .then(() => {
+        toast({
+          duration: 3000,
+          description: "Deletado com sucesso",
+          colorScheme: "green",
+        });
+        getEtapas();
+      })
+      .catch(() => {
+        toast({
+          duration: 3000,
+          description: "Erro na exclusão verifique novamente",
+          colorScheme: "red",
+        });
+      });
+  };
   useEffect(() => {
     getEtapas();
   }, [uuid]);
@@ -96,39 +132,10 @@ export default function ModalEtapas({ uuid }: Props) {
                 setEtapaUuid={setUuidEtapas}
                 editar
               />
-              <Button colorScheme="teal" w={"full"}>
+              <Button colorScheme="teal" w={"full"} onClick={alterarStatus}>
                 Ativar/Desativar
               </Button>
-              <Button
-                colorScheme="red"
-                w={"full"}
-                onClick={() => {
-                  if (!uuidEtapas) {
-                    toast({
-                      duration: 3000,
-                      colorScheme: "red",
-                      description: "Selecione uma etapa",
-                    });
-                    return;
-                  }
-                  API.delete(`/etapa-funil/${uuidEtapas}`)
-                    .then(() => {
-                      toast({
-                        duration: 3000,
-                        description: "Deletado com sucesso",
-                        colorScheme: "green",
-                      });
-                      getEtapas();
-                    })
-                    .catch(() => {
-                      toast({
-                        duration: 3000,
-                        description: "Erro na exclusão verifique novamente",
-                        colorScheme: "red",
-                      });
-                    });
-                }}
-              >
+              <Button colorScheme="red" w={"full"} onClick={excluir}>
                 Excluir
               </Button>
             </Box>
