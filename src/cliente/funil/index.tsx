@@ -67,9 +67,7 @@ export default function FunilHome() {
             <Box my={"3"} display={"flex"} justifyContent={"space-between"}>
               <Box>
                 <ModalAdicionarFunil />
-                <Button colorScheme="blue" variant={"outline"} mx={"6"}>
-                  Editar
-                </Button>
+                <ModalAdicionarFunil editar uuid={uuid} />
                 <Button colorScheme="red" variant={"outline"} mr={"6"}>
                   Excluir
                 </Button>

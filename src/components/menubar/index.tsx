@@ -38,7 +38,7 @@ export default function MenuBar({ children }: { children: ReactNode }) {
   const firstField = useRef();
 
   const location = useLocation();
-  if (location.pathname === "/login") {
+  if (location.pathname === "/") {
     return <>{children}</>;
   }
 

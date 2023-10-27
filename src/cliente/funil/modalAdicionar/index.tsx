@@ -14,6 +14,7 @@ import {
   Stack,
   useCheckboxGroup,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import API from "../../../API";
@@ -26,9 +27,10 @@ interface Props {
 export default function ModalAdicionarFunil({ editar, uuid }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nome, setNome] = useState("");
+  const toast = useToast();
   const { value, getCheckboxProps, setValue } = useCheckboxGroup();
   function onSave() {
-    const dto = { nomeFunil: nome };
+    const dto = { nomeFunil: nome, integracoes: value };
     if (editar && uuid) {
       API.put(`/funil/${uuid}`, dto);
     } else {
@@ -36,12 +38,38 @@ export default function ModalAdicionarFunil({ editar, uuid }: Props) {
     }
   }
 
+  function getFunil() {
+    API.get(`/funil/${uuid}`).then((response) => {
+      console.log(response);
+    });
+  }
+
   console.log(value);
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="green" variant={"outline"}>
-        Adicionar
+      <Button
+        onClick={() => {
+          if (editar) {
+            if (uuid) {
+              getFunil();
+              onOpen();
+            } else {
+              toast({
+                duration: 3000,
+                colorScheme: "red",
+                description: "Necessario selecionar um funil",
+              });
+            }
+          } else {
+            onOpen();
+          }
+        }}
+        colorScheme={editar ? "blue" : "green"}
+        variant={"outline"}
+        mx={editar ? "5" : "0.5"}
+      >
+        {editar ? "Editar" : "Adicionar"}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -77,7 +105,9 @@ export default function ModalAdicionarFunil({ editar, uuid }: Props) {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Fechar
             </Button>
-            <Button variant="ghost">Salvar</Button>
+            <Button variant="ghost" onClick={onSave}>
+              Salvar
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
