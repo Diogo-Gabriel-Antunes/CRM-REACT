@@ -17,9 +17,8 @@ import { TableComponent, TableOptions } from "../../components/table";
 import { useEffect, useState } from "react";
 import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
-import ModalEtapas from "./modalEtapas";
 
-export default function FunilHome() {
+export default function CampanhaHome() {
   const [uuid, setUuid] = useState("");
   const [pagina, setPagina] = useState(0);
   const [funis, setFunis] = useState([]);
@@ -96,16 +95,6 @@ export default function FunilHome() {
                 >
                   Excluir
                 </Button>
-                <Menu>
-                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                    Mais ações
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>
-                      <ModalEtapas uuid={uuid} />
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
               </Box>
               <Box display={"flex"} alignItems={"center"}>
                 <Box mr={"5"}>
