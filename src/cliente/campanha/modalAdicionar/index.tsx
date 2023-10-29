@@ -24,27 +24,38 @@ interface Props {
   uuid?: string;
 }
 
-export default function ModalAdicionarFunil({ editar, uuid }: Props) {
+export default function ModalAdicionarCampanha({ editar, uuid }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nome, setNome] = useState("");
   const toast = useToast();
-  const { value, getCheckboxProps, setValue } = useCheckboxGroup();
+
   function onSave() {
-    const dto = { nomeFunil: nome, integracoes: value };
+    const dto = { campanha: nome };
     if (editar && uuid) {
-      API.put(`/funil/${uuid}`, dto);
+      API.put(`/campanha/${uuid}`, dto).then((response) => {
+        console.log(response);
+        toast({
+          duration: 3000,
+          description: "Atualizado com sucesso",
+          colorScheme: "green",
+        });
+      });
     } else {
-      API.post("/funil", dto);
+      API.post("/campanha", dto).then((response) => {
+        toast({
+          duration: 3000,
+          description: "salvo com sucesso",
+          colorScheme: "green",
+        });
+      });
     }
   }
 
-  function getFunil() {
-    API.get(`/funil/${uuid}`).then((response) => {
-      console.log(response);
+  function getCampanha() {
+    API.get(`/campanha/${uuid}`).then((response) => {
+      setNome(response.data.nomeCampanha);
     });
   }
-
-  console.log(value);
 
   return (
     <>
@@ -52,7 +63,7 @@ export default function ModalAdicionarFunil({ editar, uuid }: Props) {
         onClick={() => {
           if (editar) {
             if (uuid) {
-              getFunil();
+              getCampanha();
               onOpen();
             } else {
               toast({
@@ -75,28 +86,16 @@ export default function ModalAdicionarFunil({ editar, uuid }: Props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Adicionar Funil</ModalHeader>
+          <ModalHeader>Adicionar Campanha</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box display={"flex"}>
+            <Box>
               <Box>
                 <Input
-                  placeholder="Nome funil"
+                  placeholder="Nome Campanha"
+                  value={nome}
                   onChange={(e) => setNome(e.target.value)}
                 />
-              </Box>
-              <Box ml={"5"}>
-                <CheckboxGroup
-                  colorScheme="green"
-                  value={value}
-                  onChange={(e) => setValue(e)}
-                >
-                  <Stack spacing={[1, 5]}>
-                    <Checkbox value="email">E-mail</Checkbox>
-                    <Checkbox value="whatsapp">WhatsApp</Checkbox>
-                    <Checkbox value="google-meet">Google Meet</Checkbox>
-                  </Stack>
-                </CheckboxGroup>
               </Box>
             </Box>
           </ModalBody>

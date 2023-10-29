@@ -17,37 +17,28 @@ import { TableComponent, TableOptions } from "../../components/table";
 import { useEffect, useState } from "react";
 import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
+import ModalAdicionarCampanha from "./modalAdicionar";
 
 export default function CampanhaHome() {
   const [uuid, setUuid] = useState("");
   const [pagina, setPagina] = useState(0);
-  const [funis, setFunis] = useState([]);
+  const [campanhas, setCampanhas] = useState([]);
   const toast = useToast();
   const tableStructere: TableOptions = {
-    data: funis,
-    headers: [
-      "Nome",
-      "Qtd  de integrações",
-      "Ativo",
-      "Qtd Etapas",
-      "Campanha",
-      "Padrão",
-    ],
+    data: campanhas,
+    headers: ["Campanha", "Status", "Data de criação"],
     options: [
-      { headerOption: "Nome", listOption: "nomeFunil" },
-      { headerOption: "Qtd  de integrações", listOption: "qtdIntegracoes" },
-      { headerOption: "Ativo", listOption: "ativo" },
-      { headerOption: "Qtd Etapas", listOption: "quantidadeEtapas" },
-      { headerOption: "Campanha", listOption: "nomeCampanha" },
-      { headerOption: "Padrão", listOption: "padrao" },
+      { headerOption: "Campanha", listOption: "campanha" },
+      { headerOption: "Status", listOption: "status" },
+      { headerOption: "Data de criação", listOption: "dataCriacao" },
     ],
-    title: "Funis",
+    title: "Campanhas",
   };
 
   function excluir() {
     if (uuid) {
-      API.delete(`/funil/${uuid}`).then((response) => {
-        getFunil();
+      API.delete(`/campanha/${uuid}`).then((response) => {
+        getCampanha();
         toast({
           colorScheme: "green",
           duration: 3000,
@@ -63,20 +54,38 @@ export default function CampanhaHome() {
     }
   }
 
-  function getFunil(ativo?: boolean) {
-    if (ativo) {
-      API.get(`/funil?offset=${pagina}&soAtivo=true`).then((response) => {
-        setFunis(response.data);
+  function ativarDesativar() {
+    if (uuid) {
+      API.put(`/campanha/alterar-status/${uuid}`).then((response) => {
+        getCampanha();
+        toast({
+          colorScheme: "green",
+          duration: 3000,
+          description: "Alterado status com sucesso",
+        });
       });
     } else {
-      API.get("/funil?offset=" + pagina).then((response) => {
-        setFunis(response.data);
-        console.log(response.data);
+      toast({
+        colorScheme: "red",
+        duration: 3000,
+        description: "É necessario selecionar uma campanha",
+      });
+    }
+  }
+
+  function getCampanha(ativo?: boolean) {
+    if (ativo) {
+      API.get(`/campanha?offset=${pagina}&soAtivo=true`).then((response) => {
+        setCampanhas(response.data);
+      });
+    } else {
+      API.get("/campanha?offset=" + pagina).then((response) => {
+        setCampanhas(response.data);
       });
     }
   }
   useEffect(() => {
-    getFunil();
+    getCampanha();
   }, []);
   return (
     <>
@@ -85,8 +94,16 @@ export default function CampanhaHome() {
           <Box m={"auto"} p={"6"} border={"1px"} borderRadius={"base"}>
             <Box my={"3"} display={"flex"} justifyContent={"space-between"}>
               <Box>
-                <ModalAdicionarFunil />
-                <ModalAdicionarFunil editar uuid={uuid} />
+                <ModalAdicionarCampanha />
+                <ModalAdicionarCampanha editar uuid={uuid} />
+                <Button
+                  colorScheme="teal"
+                  variant={"outline"}
+                  mr={"6"}
+                  onClick={ativarDesativar}
+                >
+                  Ativar/Desativar
+                </Button>
                 <Button
                   colorScheme="red"
                   variant={"outline"}
@@ -102,9 +119,9 @@ export default function CampanhaHome() {
                     colorScheme="green"
                     onChange={(e) => {
                       if (e.target.checked) {
-                        getFunil(true);
+                        getCampanha(true);
                       } else {
-                        getFunil();
+                        getCampanha();
                       }
                     }}
                   >
@@ -134,7 +151,7 @@ export default function CampanhaHome() {
                 setUuid={setUuid}
                 pagina={pagina}
                 setPagina={setPagina}
-                refresh={getFunil}
+                refresh={getCampanha}
               />
             </Box>
           </Box>
