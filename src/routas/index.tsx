@@ -15,6 +15,7 @@ import ClienteContextProvider from "../context/clienteContext";
 import FunilHome from "../cliente/funil";
 import IsAuthenticate from "../API/Autenticacao";
 import CampanhaHome from "../cliente/campanha";
+import AgendaFunilHome from "../agenda/funil";
 
 export default function AppRoutes() {
   return (
@@ -41,6 +42,12 @@ export default function AppRoutes() {
               path="cliente/campanha"
               element={
                 IsAuthenticate() ? <CampanhaHome /> : <Navigate to={"/"} />
+              }
+            />
+            <Route
+              path="agenda/funil"
+              element={
+                IsAuthenticate() ? <AgendaFunilHome /> : <Navigate to={"/"} />
               }
             />
           </Routes>

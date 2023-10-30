@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
 import ModalAdicionarCampanha from "./modalAdicionar";
+import ModalVincularFunil from "./modalVincularFunil";
 
 export default function CampanhaHome() {
   const [uuid, setUuid] = useState("");
@@ -112,6 +113,16 @@ export default function CampanhaHome() {
                 >
                   Excluir
                 </Button>
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                    Mais ações
+                  </MenuButton>
+                  <MenuList px={"5"}>
+                    <MenuItem>
+                      <ModalVincularFunil uuid={uuid} />
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
               </Box>
               <Box display={"flex"} alignItems={"center"}>
                 <Box mr={"5"}>
