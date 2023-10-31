@@ -14,6 +14,10 @@ interface Props {
 }
 
 export default function AccordionCompromisso({ title, compromisso }: Props) {
+  if (!compromisso.uuid) {
+    return <></>;
+  }
+
   return (
     <Accordion>
       <AccordionItem>
