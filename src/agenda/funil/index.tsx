@@ -28,45 +28,9 @@ import { AxiosResponse } from "axios";
 import { getCampanhaSelect, getFunilSelect } from "../../genericService";
 import SelectPadrao from "../../components/select";
 import { AddIcon } from "@chakra-ui/icons";
-export interface Compromisso {
-  uuid: string;
-  inicioCompromisso: string;
-  fimCompromisso: string;
-  diaDaSemana: string;
-  mes: string;
-  horario: string;
-  tipoCompromisso: string;
-  diaDoMes: string;
-}
+import ModalAdicionarCompromisso from "./modalAdicionar";
+import { Calendario, Dia, Mes } from "../../model/calendario";
 
-export interface CalendarioHorarios {
-  compromisso: Compromisso;
-  horario: string;
-}
-
-export interface Dias {
-  calendarioHorarios: CalendarioHorarios[];
-  diaDoMes: string;
-}
-export interface Calendario {
-  dias: Dias[];
-  mes: string;
-}
-
-enum Mes {
-  "JANEIRO" = 0,
-  "FEVEREIRO" = 1,
-  "MARCO" = 2,
-  "ABRIL" = 3,
-  "MAIO" = 4,
-  "JUNHO" = 5,
-  "JULHO" = 6,
-  "AGOSTO" = 7,
-  "SETEMBRO" = 8,
-  "OUTUBRO" = 9,
-  "NOVEMBRO" = 10,
-  "DEZEMBRO" = 11,
-}
 export default function AgendaFunilHome() {
   const [calendario, setCalendario] = useState<Calendario>();
   const [mesDeHoje, setMesDeHoje] = useState<any>();
@@ -185,13 +149,9 @@ export default function AgendaFunilHome() {
                         <Center>
                           <Heading>
                             Dia {index + 1}{" "}
-                            <IconButton
-                              ml={"4"}
-                              variant="outline"
-                              colorScheme="teal"
-                              aria-label="Adicionar"
-                              fontSize="12px"
-                              icon={<AddIcon />}
+                            <ModalAdicionarCompromisso
+                              dia={dia.diaDoMes}
+                              mes={mesDeHoje}
                             />
                           </Heading>
                         </Center>

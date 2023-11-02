@@ -6,7 +6,7 @@ import {
   AccordionPanel,
   Box,
 } from "@chakra-ui/react";
-import { Compromisso } from "..";
+import { Compromisso } from "../../../model/calendario";
 
 interface Props {
   title: string;
