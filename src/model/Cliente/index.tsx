@@ -1,5 +1,5 @@
-import { IContato } from "../contato";
-import { IEndereco } from "../endereco";
+import { IContato, contatoDefault } from "../contato";
+import { IEndereco, enderecoDefault } from "../endereco";
 
 export interface ICliente {
   nome: string;
@@ -11,3 +11,14 @@ export interface ICliente {
   minFaturamento: number;
   maxFaturamento: number;
 }
+
+export const clienteDefault: ICliente = {
+  nome: "",
+  sobrenome: "",
+  contato: contatoDefault,
+  endereco: enderecoDefault,
+  cargo: "",
+  setor: "",
+  minFaturamento: 0,
+  maxFaturamento: 0,
+};

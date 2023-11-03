@@ -28,6 +28,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import TabTarefa from "./tabTarefa";
 import { Dia, Mes } from "../../../model/calendario";
 import { stringify } from "querystring";
+import ICompromisso, { compromissoDefault } from "../../../model/compromisso";
 
 interface Props {
   dia: string;
@@ -35,6 +36,8 @@ interface Props {
 }
 
 export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
+  const [compromisso, setCompromisso] =
+    useState<ICompromisso>(compromissoDefault);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nome, setNome] = useState("");
   const toast = useToast();
@@ -78,7 +81,11 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
 
                 <TabPanels>
                   <TabPanel>
-                    <TabTarefa data={dataSelecionada!} />
+                    <TabTarefa
+                      data={dataSelecionada!}
+                      compromisso={compromisso}
+                      setCompromisso={setCompromisso}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <p>two!</p>
