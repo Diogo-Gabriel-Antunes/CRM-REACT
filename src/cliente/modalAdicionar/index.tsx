@@ -20,11 +20,12 @@ import TabCliente from "./tabCliente";
 import React, { useContext, useEffect } from "react";
 import { ClienteClear, ClienteContext } from "../../context/clienteContext";
 import API from "../../API";
+import { ICliente } from "../../model/Cliente";
 
 interface Props {
   uuid?: string;
   editar?: boolean;
-  setClientes: React.Dispatch<React.SetStateAction<undefined>>;
+  setClientes: React.Dispatch<React.SetStateAction<ICliente[]>>;
 }
 
 export default function ModalAdicionarCliente({

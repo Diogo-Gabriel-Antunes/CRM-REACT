@@ -5,6 +5,8 @@ import {
   CheckboxGroup,
   IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -29,6 +31,9 @@ import TabTarefa from "./tabTarefa";
 import { Dia, Mes } from "../../../model/calendario";
 import { stringify } from "querystring";
 import ICompromisso, { compromissoDefault } from "../../../model/compromisso";
+import ModalPesquisaClienteGeneric from "../../../components/modalCliente";
+import { ICliente, clienteDefault } from "../../../model/Cliente";
+import { setuid } from "process";
 
 interface Props {
   dia: string;
@@ -53,7 +58,17 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
       }`
     );
   }
+  const [clienteSelecionado, setClienteSelecionado] =
+    useState<ICliente>(clienteDefault);
+  const [uuid, setUuid] = useState("");
 
+  useEffect(() => {
+    if (uuid !== "") {
+      API.get(`/cliente/${uuid}`).then((response) =>
+        setClienteSelecionado(response.data)
+      );
+    }
+  }, [uuid]);
   return (
     <>
       <IconButton
@@ -73,6 +88,18 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
           <ModalCloseButton />
           <ModalBody>
             <Box>
+              <InputGroup size="md">
+                <Input
+                  pr="4.5rem"
+                  placeholder="Cliente"
+                  value={clienteSelecionado.nome}
+                  disabled
+                />
+                <InputRightElement width="4.5rem">
+                  <ModalPesquisaClienteGeneric setUuid={setUuid} uuid={uuid} />
+                </InputRightElement>
+              </InputGroup>
+
               <Tabs>
                 <TabList>
                   <Tab>Tarefa</Tab>

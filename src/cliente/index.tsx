@@ -13,12 +13,10 @@ import { TableComponent, TableOptions } from "../components/table";
 import { Search2Icon } from "@chakra-ui/icons";
 import ModalAdicionarCliente from "./modalAdicionar";
 import { setuid } from "process";
+import { tab } from "@testing-library/user-event/dist/tab";
+import { ICliente } from "../model/Cliente";
 
-export default function ClienteHome() {
-  const toast = useToast();
-  const [uuid, setUuid] = useState("");
-  const [clientes, setClientes] = useState();
-  const [pagina, setPagina] = useState(0);
+export const clienteTableStructure = (clientes: ICliente[]) => {
   const tableStructere: TableOptions = {
     data: clientes!,
     headers: ["Nome", "Sobrenome", "Min Faturamento", "Max Faturamento"],
@@ -43,15 +41,24 @@ export default function ClienteHome() {
     ],
   };
 
+  return tableStructere;
+};
+
+export default function ClienteHome() {
+  const toast = useToast();
+  const [uuid, setUuid] = useState("");
+  const [clientes, setClientes] = useState<ICliente[]>([]);
+  const [pagina, setPagina] = useState(0);
+
   const getClientes = () => {
     API.get(`/cliente?offset=${pagina}`).then((response) => {
       setClientes(response.data);
     });
   };
-
   useEffect(() => {
     getClientes();
   }, [pagina]);
+  const tableStructere = clienteTableStructure(clientes!);
   return (
     <>
       <Box>
