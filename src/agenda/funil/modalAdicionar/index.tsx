@@ -3,6 +3,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  FormLabel,
   IconButton,
   Input,
   InputGroup,
@@ -34,6 +35,9 @@ import ICompromisso, { compromissoDefault } from "../../../model/compromisso";
 import ModalPesquisaClienteGeneric from "../../../components/modalCliente";
 import { ICliente, clienteDefault } from "../../../model/Cliente";
 import { setuid } from "process";
+import ISelect from "../../../model/select";
+import SelectPadrao from "../../../components/select";
+import TabOportunidade from "./tabOportunidade";
 
 interface Props {
   dia: string;
@@ -47,9 +51,11 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
   const [nome, setNome] = useState("");
   const toast = useToast();
   const [dataSelecionada, setDataSelecionada] = useState<string>();
+  const [horariosSelect, setHorariosSelect] = useState<ISelect[]>([]);
 
   function openModal() {
     onOpen();
+
     const mesQuery = Mes[mes as keyof typeof Mes];
     const diaQuery = Dia[dia as keyof typeof Dia];
     setDataSelecionada(
@@ -57,6 +63,15 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
         diaQuery <= 9 ? "0" + diaQuery : diaQuery
       }`
     );
+    setCompromisso({
+      ...compromisso,
+      mes: mes,
+      diaDoMes: dia,
+      tarefas: {
+        ...compromisso.tarefas,
+        horaMarcada: new Date(2023, mesQuery, diaQuery),
+      },
+    });
   }
   const [clienteSelecionado, setClienteSelecionado] =
     useState<ICliente>(clienteDefault);
@@ -68,6 +83,11 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
         setClienteSelecionado(response.data)
       );
     }
+    API.get<ISelect[]>("/configuracao/jornada-de-trabalho/select").then(
+      (response) => {
+        setHorariosSelect(response.data);
+      }
+    );
   }, [uuid]);
   return (
     <>
@@ -99,7 +119,44 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
                   <ModalPesquisaClienteGeneric setUuid={setUuid} uuid={uuid} />
                 </InputRightElement>
               </InputGroup>
-
+              <Box my={"5"}>
+                <FormLabel fontWeight={"bold"}>
+                  Inicio do compromisso Representação
+                </FormLabel>
+                <Input
+                  type="datetime-local"
+                  onChange={(e) => {
+                    setCompromisso({
+                      ...compromisso,
+                      inicioCompromisso: e.target.value,
+                    });
+                  }}
+                />
+              </Box>
+              <Box>
+                <FormLabel fontWeight={"bold"}>
+                  Fim do compromisso Representação
+                </FormLabel>
+                <Input
+                  type="datetime-local"
+                  onChange={(e) => {
+                    setCompromisso({
+                      ...compromisso,
+                      fimCompromisso: e.target.value,
+                    });
+                  }}
+                />
+              </Box>
+              <Box my="5">
+                <SelectPadrao
+                  placeHolder="Horario marcação"
+                  onChange={(e) =>
+                    setCompromisso({ ...compromisso, horario: e.target.value })
+                  }
+                  options={horariosSelect}
+                  value={compromisso.horario}
+                />
+              </Box>
               <Tabs>
                 <TabList>
                   <Tab>Tarefa</Tab>
@@ -115,7 +172,11 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
                     />
                   </TabPanel>
                   <TabPanel>
-                    <p>two!</p>
+                    <TabOportunidade
+                      data={dataSelecionada!}
+                      compromisso={compromisso}
+                      setCompromisso={setCompromisso}
+                    />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
@@ -126,7 +187,6 @@ export default function ModalAdicionarCompromisso({ dia, mes }: Props) {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Fechar
             </Button>
-            <Button variant="ghost">Salvar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

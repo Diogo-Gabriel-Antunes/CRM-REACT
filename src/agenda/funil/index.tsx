@@ -116,6 +116,7 @@ export default function AgendaFunilHome() {
       <Box bg={"WindowFrame"} m={"5"} p={"5"} borderRadius={"base"}>
         <SimpleGrid p={"2"} columns={3} spacing={5}>
           <SelectPadrao
+            placeHolder="Mes"
             value={mesDeHoje}
             onChange={(e) => {
               getAgenda(e.target.value);
@@ -124,6 +125,7 @@ export default function AgendaFunilHome() {
             options={selectMeses}
           />
           <SelectPadrao
+            placeHolder="Funil"
             onChange={(e) => {
               setFunilSelected(e.target.value);
             }}
@@ -131,6 +133,7 @@ export default function AgendaFunilHome() {
             options={funilSelect}
           />
           <SelectPadrao
+            placeHolder="Funil"
             onChange={(e) => {
               setFunilSelected(e.target.value);
             }}

@@ -33,14 +33,13 @@ interface IOportunidade {
 export interface ITarefa {
   uuid?: string;
   tipoDeTarefa: string;
-  horaMarcada: string;
+  horaMarcada?: Date;
   cliente: ICliente;
 }
 
 export const tarefaDefault: ITarefa = {
   uuid: "",
   tipoDeTarefa: "",
-  horaMarcada: "",
   cliente: clienteDefault,
 };
 

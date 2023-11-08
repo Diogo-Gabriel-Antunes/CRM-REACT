@@ -1,8 +1,10 @@
-import { Box, Input } from "@chakra-ui/react";
+import { Box, IconButton, Input, useToast } from "@chakra-ui/react";
 import ISelect from "../../../../model/select";
 import SelectPadrao from "../../../../components/select";
 import ICompromisso from "../../../../model/compromisso";
-import { SetStateAction } from "react";
+import { SetStateAction, useState } from "react";
+import { AddIcon } from "@chakra-ui/icons";
+import API from "../../../../API";
 
 interface Props {
   data: string;
@@ -15,6 +17,7 @@ export default function TabTarefa({
   compromisso,
   setCompromisso,
 }: Props) {
+  const [horaMarcada, setHoraMarcada] = useState("");
   const tipoTarefa: ISelect[] = [
     {
       label: "Ligação",
@@ -46,6 +49,17 @@ export default function TabTarefa({
     },
   ];
 
+  const toast = useToast();
+  function onSave() {
+    API.post("/compromisso/tarefa", compromisso).then((response) => {
+      toast({
+        duration: 3000,
+        colorScheme: "green",
+        description: "Tarefa salva com sucesso",
+      });
+    });
+  }
+
   return (
     <>
       <Box>
@@ -54,6 +68,7 @@ export default function TabTarefa({
         </Box>
         <Box my={"5"}>
           <SelectPadrao
+            placeHolder="Tipo Tarefa"
             onChange={(e) =>
               setCompromisso({
                 ...compromisso,
@@ -70,16 +85,31 @@ export default function TabTarefa({
         <Box>
           <Input
             type="time"
-            value={compromisso.tarefas.horaMarcada}
-            onChange={(e) =>
+            value={horaMarcada}
+            onChange={(e) => {
+              compromisso.tarefas.horaMarcada?.setHours(
+                Number(e.target.value.slice(0, 2)),
+                Number(e.target.value.slice(3, 5))
+              );
               setCompromisso({
                 ...compromisso,
                 tarefas: {
                   ...compromisso.tarefas,
-                  horaMarcada: e.target.value,
+                  horaMarcada: compromisso.tarefas.horaMarcada,
                 },
-              })
-            }
+              });
+              setHoraMarcada(e.target.value);
+            }}
+          />
+        </Box>
+        <Box>
+          <IconButton
+            w="full"
+            mt={"5"}
+            colorScheme="green"
+            aria-label="adicionar tarefa"
+            icon={<AddIcon />}
+            onClick={onSave}
           />
         </Box>
       </Box>
