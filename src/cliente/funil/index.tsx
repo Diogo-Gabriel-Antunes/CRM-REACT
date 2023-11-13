@@ -18,14 +18,12 @@ import { useEffect, useState } from "react";
 import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
 import ModalEtapas from "./modalEtapas";
+import IFunil from "../../model/funil";
+import { create } from "domain";
 
-export default function FunilHome() {
-  const [uuid, setUuid] = useState("");
-  const [pagina, setPagina] = useState(0);
-  const [funis, setFunis] = useState([]);
-  const toast = useToast();
-  const tableStructere: TableOptions = {
-    data: funis,
+export function createTableStructureFunil(data: IFunil[]) {
+  return {
+    data: data,
     headers: [
       "Nome",
       "Qtd  de integrações",
@@ -44,6 +42,14 @@ export default function FunilHome() {
     ],
     title: "Funis",
   };
+}
+
+export default function FunilHome() {
+  const [uuid, setUuid] = useState("");
+  const [pagina, setPagina] = useState(0);
+  const [funis, setFunis] = useState<IFunil[]>([]);
+  const toast = useToast();
+  const tableStructere: TableOptions = createTableStructureFunil(funis);
 
   function excluir() {
     if (uuid) {

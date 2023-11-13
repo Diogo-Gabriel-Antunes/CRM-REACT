@@ -19,22 +19,14 @@ import API from "../../API";
 import ModalAdicionarFunil from "./modalAdicionar";
 import ModalAdicionarCampanha from "./modalAdicionar";
 import ModalVincularFunil from "./modalVincularFunil";
+import ICampanha, { createTableStructureCampanha } from "../../model/campanha";
 
 export default function CampanhaHome() {
   const [uuid, setUuid] = useState("");
   const [pagina, setPagina] = useState(0);
-  const [campanhas, setCampanhas] = useState([]);
+  const [campanhas, setCampanhas] = useState<ICampanha[]>([]);
   const toast = useToast();
-  const tableStructere: TableOptions = {
-    data: campanhas,
-    headers: ["Campanha", "Status", "Data de criação"],
-    options: [
-      { headerOption: "Campanha", listOption: "campanha" },
-      { headerOption: "Status", listOption: "status" },
-      { headerOption: "Data de criação", listOption: "dataCriacao" },
-    ],
-    title: "Campanhas",
-  };
+  const tableStructere: TableOptions = createTableStructureCampanha(campanhas);
 
   function excluir() {
     if (uuid) {

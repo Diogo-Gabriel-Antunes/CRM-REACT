@@ -15,7 +15,7 @@ export default interface ICompromisso {
   horario: string;
   tipoCompromisso: string;
   diaDoMes: string;
-  oportunidade: IOportunidade;
+  oportunidades: IOportunidade;
   tarefas: ITarefa;
 }
 
@@ -62,6 +62,6 @@ export const compromissoDefault: ICompromisso = {
   horario: "",
   tipoCompromisso: "",
   diaDoMes: "",
-  oportunidade: oportunidadeDefault,
+  oportunidades: oportunidadeDefault,
   tarefas: tarefaDefault,
 };

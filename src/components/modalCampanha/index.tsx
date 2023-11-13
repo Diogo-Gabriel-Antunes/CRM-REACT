@@ -34,58 +34,36 @@ import { ICliente, clienteDefault } from "../../model/Cliente";
 import IEtapaFunil, {
   createTableStructureEtapaFunil,
 } from "../../model/etapaFunil";
+import ICampanha, { createTableStructureCampanha } from "../../model/campanha";
 
 interface Props {
   uuid: string;
   setUuid: React.Dispatch<SetStateAction<string>>;
-  funilUuid: string;
 }
 
-export default function ModalPesquisaEtapaFunilGeneric({
-  uuid,
-  setUuid,
-  funilUuid,
-}: Props) {
+export default function ModalPesquisaCampanhaGeneric({ uuid, setUuid }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [pagina, setPagina] = useState(0);
   const toast = useToast();
-  const [etapaFunil, setEtapaFunil] = useState<IEtapaFunil[]>([]);
-  const tableStructure = createTableStructureEtapaFunil(
-    etapaFunil,
-    "Etapa Funil"
-  );
-  const [etapa, setEtapa] = useState("");
+  const [campanha, setCampanha] = useState<ICampanha[]>([]);
+  const tableStructure = createTableStructureCampanha(campanha);
+  const [nomeCampanha, setNomeCampanha] = useState("");
 
-  function getEtapaFunil() {
-    if (funilUuid !== "") {
-      API.get(`/etapa-funil?funilUuid=${funilUuid}`).then((response) =>
-        setEtapaFunil(response.data)
-      );
-    }
+  function getCampanha() {
+    API.get(`/campanha?offset=${pagina}`).then((response) =>
+      setCampanha(response.data)
+    );
   }
 
   function pesquisar() {
-    API.get(`/etapa-funil?funilUuid=${funilUuid}&etapa=${etapa}`).then(
-      (response) => setEtapaFunil(response.data)
+    API.get(`/campanha?nomeCampanha=${nomeCampanha}&offset=${0}`).then(
+      (response) => setCampanha(response.data)
     );
   }
 
   useEffect(() => {
-    getEtapaFunil();
+    getCampanha();
   }, [pagina]);
-
-  function openModal() {
-    if (funilUuid) {
-      onOpen();
-      getEtapaFunil();
-    } else {
-      toast({
-        duration: 3000,
-        colorScheme: "red",
-        description: "Necessario selecionar um funil antes",
-      });
-    }
-  }
 
   return (
     <>
@@ -94,21 +72,21 @@ export default function ModalPesquisaEtapaFunilGeneric({
         icon={<Search2Icon />}
         colorScheme="green"
         ml={"8"}
-        onClick={openModal}
+        onClick={onOpen}
       />
 
       <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Pesquisa etapa funil</ModalHeader>
+          <ModalHeader>Pesquisa campanha</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <SimpleGrid columns={2} spacing={3} my={"5"}>
               <Box display={"flex"}>
                 <Input
-                  placeholder="Etapa"
-                  value={etapa}
-                  onChange={(e) => setEtapa(e.target.value)}
+                  placeholder="Nome Campanha"
+                  value={nomeCampanha}
+                  onChange={(e) => setNomeCampanha(e.target.value)}
                 />
                 <IconButton
                   aria-label="pesquisa"
@@ -123,7 +101,7 @@ export default function ModalPesquisaEtapaFunilGeneric({
               {" "}
               <TableComponent
                 pagina={pagina}
-                refresh={getEtapaFunil}
+                refresh={getCampanha}
                 setPagina={setPagina}
                 setUuid={setUuid}
                 uuid={uuid}
