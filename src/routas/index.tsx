@@ -16,6 +16,12 @@ import FunilHome from "../cliente/funil";
 import IsAuthenticate from "../API/Autenticacao";
 import CampanhaHome from "../cliente/campanha";
 import AgendaFunilHome from "../agenda/funil";
+import AgendaConfiguracoesHome from "../agenda/configuracoes";
+import DragDropHome from "../dragDrop";
+import ProdutoCadastrarHome from "../produtos/cadastrar";
+import MateriaPrimaCadastrarHome from "../produtos/cadastrar/MateriaPrima";
+import EmailCadastrarHome from "../email/cadastrar";
+import ConfiguracoesEmailHome from "../email/configuracoes";
 
 export default function AppRoutes() {
   return (
@@ -45,9 +51,65 @@ export default function AppRoutes() {
               }
             />
             <Route
-              path="agenda/funil"
+              path="agenda/visualizar"
               element={
                 IsAuthenticate() ? <AgendaFunilHome /> : <Navigate to={"/"} />
+              }
+            />
+            <Route
+              path="agenda/configuracao"
+              element={
+                IsAuthenticate() ? (
+                  <AgendaConfiguracoesHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />
+            <Route
+              path="drag-drop/visualizar"
+              element={
+                IsAuthenticate() ? <DragDropHome /> : <Navigate to={"/"} />
+              }
+            />
+            <Route
+              path="produto/cadastrar"
+              element={
+                IsAuthenticate() ? (
+                  <ProdutoCadastrarHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />
+            <Route
+              path="produto/materia-prima"
+              element={
+                IsAuthenticate() ? (
+                  <MateriaPrimaCadastrarHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />{" "}
+            <Route
+              path="email/cadastrar"
+              element={
+                IsAuthenticate() ? (
+                  <EmailCadastrarHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />
+            <Route
+              path="email/configuracoes"
+              element={
+                IsAuthenticate() ? (
+                  <ConfiguracoesEmailHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
               }
             />
           </Routes>

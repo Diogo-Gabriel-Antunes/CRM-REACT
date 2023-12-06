@@ -1,16 +1,7 @@
-export interface Compromisso {
-  uuid: string;
-  inicioCompromisso: string;
-  fimCompromisso: string;
-  diaDaSemana: string;
-  mes: string;
-  horario: string;
-  tipoCompromisso: string;
-  diaDoMes: string;
-}
+import ICompromisso from "../compromisso";
 
 export interface CalendarioHorarios {
-  compromisso: Compromisso;
+  compromisso: ICompromisso;
   horario: string;
 }
 

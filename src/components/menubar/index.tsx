@@ -33,6 +33,8 @@ export default function MenuBar({ children }: { children: ReactNode }) {
   const [cliente, setCliente] = useState();
   const [agenda, setAgenda] = useState();
   const [dragDrop, setDragDrop] = useState();
+  const [produto, setProduto] = useState();
+  const [email, setEmail] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = useRef();
@@ -60,10 +62,23 @@ export default function MenuBar({ children }: { children: ReactNode }) {
       setDragDrop(response.data);
     });
   }
+
+  function getProduto() {
+    API.get<Tabs[]>("/menu/produto").then((response: AxiosResponse) => {
+      setProduto(response.data);
+    });
+  }
+  function getEmail() {
+    API.get<Tabs[]>("/menu/email").then((response: AxiosResponse) => {
+      setEmail(response.data);
+    });
+  }
   if (!cliente && !agenda && !dragDrop) {
     getClientes();
     getAgenda();
     getDragDrop();
+    getProduto();
+    getEmail();
   }
 
   return (
@@ -108,6 +123,8 @@ export default function MenuBar({ children }: { children: ReactNode }) {
             <TabsComponent title="Cliente" tabs={cliente!} />
             <TabsComponent title="Agenda" tabs={agenda!} />
             <TabsComponent title="Drag Drop" tabs={dragDrop!} />
+            <TabsComponent title="Produto" tabs={produto!} />
+            <TabsComponent title="Email" tabs={email!} />
           </Box>
         </Box>
         <Box></Box>

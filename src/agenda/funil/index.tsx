@@ -31,7 +31,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import ModalAdicionarCompromisso from "./modalAdicionar";
 import { Calendario, Dia, Mes } from "../../model/calendario";
 
-export default function AgendaFunilHome() {
+export default function AgendaHome() {
   const [calendario, setCalendario] = useState<Calendario>();
   const [mesDeHoje, setMesDeHoje] = useState<any>();
   const [campanhaSelect, setCampanhaSelect] = useState<ISelect[]>([]);
@@ -158,154 +158,156 @@ export default function AgendaFunilHome() {
                             />
                           </Heading>
                         </Center>
-                        {dia.calendarioHorarios.map((horario) => (
-                          <>
-                            {horario.horario == "H01" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="1 Hora"
-                              />
-                            )}
-                            {horario.horario == "H02" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="2 Hora"
-                              />
-                            )}
-                            {horario.horario == "H03" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="3 Hora"
-                              />
-                            )}
-                            {horario.horario == "H04" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="4 Hora"
-                              />
-                            )}
-                            {horario.horario == "H05" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="5 Hora"
-                              />
-                            )}
-                            {horario.horario == "H06" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="6 Hora"
-                              />
-                            )}
-                            {horario.horario == "H07" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="7 Hora"
-                              />
-                            )}
-                            {horario.horario == "H08" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="8 Hora"
-                              />
-                            )}
-                            {horario.horario == "H09" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="9 Hora"
-                              />
-                            )}
-                            {horario.horario == "H10" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="10 Hora"
-                              />
-                            )}
-                            {horario.horario == "H11" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="11 Hora"
-                              />
-                            )}
-                            {horario.horario == "H12" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="12 Hora"
-                              />
-                            )}
-                            {horario.horario == "H13" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="13 Hora"
-                              />
-                            )}
-                            {horario.horario == "H14" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="14 Hora"
-                              />
-                            )}
-                            {horario.horario == "H15" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="15 Hora"
-                              />
-                            )}
-                            {horario.horario == "H16" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="16 Hora"
-                              />
-                            )}
-                            {horario.horario == "H17" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="17 Hora"
-                              />
-                            )}
-                            {horario.horario == "H18" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="18 Hora"
-                              />
-                            )}
-                            {horario.horario == "H19" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="19 Hora"
-                              />
-                            )}
-                            {horario.horario == "H20" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="20 Hora"
-                              />
-                            )}
-                            {horario.horario == "H21" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="21 Hora"
-                              />
-                            )}
-                            {horario.horario == "H22" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="22 Hora"
-                              />
-                            )}
-                            {horario.horario == "H23" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="23 Hora"
-                              />
-                            )}
-                            {horario.horario == "H24" && (
-                              <AccordionCompromisso
-                                compromisso={horario.compromisso}
-                                title="24 Hora"
-                              />
-                            )}
-                          </>
-                        ))}
+                        <Accordion mt={"6"}>
+                          {dia.calendarioHorarios.map((horario) => (
+                            <>
+                              {horario.horario == "H01" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="1 Hora"
+                                />
+                              )}
+                              {horario.horario == "H02" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="2 Hora"
+                                />
+                              )}
+                              {horario.horario == "H03" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="3 Hora"
+                                />
+                              )}
+                              {horario.horario == "H04" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="4 Hora"
+                                />
+                              )}
+                              {horario.horario == "H05" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="5 Hora"
+                                />
+                              )}
+                              {horario.horario == "H06" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="6 Hora"
+                                />
+                              )}
+                              {horario.horario == "H07" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="7 Hora"
+                                />
+                              )}
+                              {horario.horario == "H08" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="8 Hora"
+                                />
+                              )}
+                              {horario.horario == "H09" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="9 Hora"
+                                />
+                              )}
+                              {horario.horario == "H10" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="10 Hora"
+                                />
+                              )}
+                              {horario.horario == "H11" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="11 Hora"
+                                />
+                              )}
+                              {horario.horario == "H12" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="12 Hora"
+                                />
+                              )}
+                              {horario.horario == "H13" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="13 Hora"
+                                />
+                              )}
+                              {horario.horario == "H14" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="14 Hora"
+                                />
+                              )}
+                              {horario.horario == "H15" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="15 Hora"
+                                />
+                              )}
+                              {horario.horario == "H16" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="16 Hora"
+                                />
+                              )}
+                              {horario.horario == "H17" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="17 Hora"
+                                />
+                              )}
+                              {horario.horario == "H18" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="18 Hora"
+                                />
+                              )}
+                              {horario.horario == "H19" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="19 Hora"
+                                />
+                              )}
+                              {horario.horario == "H20" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="20 Hora"
+                                />
+                              )}
+                              {horario.horario == "H21" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="21 Hora"
+                                />
+                              )}
+                              {horario.horario == "H22" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="22 Hora"
+                                />
+                              )}
+                              {horario.horario == "H23" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="23 Hora"
+                                />
+                              )}
+                              {horario.horario == "H24" && (
+                                <AccordionCompromisso
+                                  compromisso={horario.compromisso}
+                                  title="24 Hora"
+                                />
+                              )}
+                            </>
+                          ))}
+                        </Accordion>
                       </Box>
                     </Stack>
                   </CardBody>
