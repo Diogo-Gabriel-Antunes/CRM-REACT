@@ -12,33 +12,45 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import { TableComponent } from "../../components/table";
 import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import ModalAdicionarTemplate from "../cadastrar/ModalAdicionarTemplate";
-import {
-  IConfiguracaoEmail,
-  createTableStructureConfiguracaoEmail,
-} from "../../model/configuracaoEmail";
-import ModalAdicionarConfiguracaoEmail from "./modalAdicionarConfiguracaoEmail";
-import { MSEmail } from "../../API";
+import { IMateriaPrima } from "../../model/materiaPrima";
+import { TableComponent, TableOptions } from "../../components/table";
+import API from "../../API";
+import ModalAdicionarProduto from "../cadastrar/modalAdicionar";
+import ModalAdicionarMateriaPrima from "./ModalAdicionarMateriaPrima";
 
-export default function ConfiguracoesEmailHome() {
+export default function MateriaPrimaCadastrarHome() {
   const toast = useToast();
   const [uuid, setUuid] = useState("");
-  const [configuracoes, setConfiguracoes] = useState<IConfiguracaoEmail[]>([]);
+  const [materiaPrima, setMateriaPrima] = useState<IMateriaPrima[]>([]);
   const [pagina, setPagina] = useState(0);
 
-  const getConfiguracoes = () => {
-    MSEmail.get(`/configuracao-email`).then((response) => {
-      setConfiguracoes(response.data);
-    });
+  const getMateriaPrima = () => {
+    API.get(`/materia-prima?offset=${pagina}&limit=20`).then(
+      (response: any) => {
+        setMateriaPrima(response.data);
+      }
+    );
   };
   useEffect(() => {
-    getConfiguracoes();
+    getMateriaPrima();
   }, [pagina]);
-  const tableStructere = createTableStructureConfiguracaoEmail(configuracoes);
+  const tableStructere: TableOptions = {
+    data: materiaPrima,
+    headers: ["Nome", "Quantidade Em Estoque"],
+    options: [
+      {
+        headerOption: "Nome",
+        listOption: "nome",
+      },
+      {
+        headerOption: "Quantidade Em Estoque",
+        listOption: "quantidadeEstoque",
+      },
+    ],
+    title: "Materia Prima",
+  };
   return (
     <>
       <Box>
@@ -52,34 +64,32 @@ export default function ConfiguracoesEmailHome() {
             >
               <Box>
                 <Box>
-                  <ModalAdicionarConfiguracaoEmail refresh={getConfiguracoes} />
-                  <ModalAdicionarConfiguracaoEmail
+                  <ModalAdicionarMateriaPrima refresh={getMateriaPrima} />
+                  <ModalAdicionarMateriaPrima
                     editar
                     uuid={uuid}
-                    refresh={getConfiguracoes}
+                    refresh={getMateriaPrima}
                   />
-
                   <Button
                     mr={"5"}
                     colorScheme="red"
                     variant={"outline"}
                     onClick={() => {
                       if (uuid) {
-                        MSEmail.delete("/configuracao-email/" + uuid).then(
-                          (response) => {
-                            toast({
-                              duration: 3000,
-                              colorScheme: "green",
-                              description: "Template deletado com sucesso",
-                            });
-                            getConfiguracoes();
-                          }
-                        );
+                        API.delete("/produto/" + uuid).then((response: any) => {
+                          toast({
+                            duration: 3000,
+                            colorScheme: "green",
+                            description: "Produto deletado com sucesso",
+                          });
+                          getMateriaPrima();
+                        });
                       }
                     }}
                   >
                     Excluir
                   </Button>
+                  .
                 </Box>
               </Box>
 
@@ -105,7 +115,7 @@ export default function ConfiguracoesEmailHome() {
                 setUuid={setUuid}
                 pagina={pagina}
                 setPagina={setPagina}
-                refresh={getConfiguracoes}
+                refresh={getMateriaPrima}
               />
             </Box>
           </Box>

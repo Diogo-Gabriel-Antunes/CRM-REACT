@@ -21,6 +21,10 @@ import {
 import axios from "axios";
 import { ITemplate, templateDefault } from "../../../model/template";
 import { useState } from "react";
+import ISelect from "../../../model/select";
+import SelectPadrao from "../../../components/select";
+import { MSEmail } from "../../../API";
+import TemplateVariaveis from "../variaveis";
 
 interface Props {
   uuid?: string;
@@ -46,21 +50,26 @@ export default function ModalAdicionarTemplate({
     });
   }
 
+  const selectTipoTemplate: ISelect[] = [
+    {
+      label: "Venda",
+      value: "VENDA",
+    },
+    { label: "Primeiro Contato", value: "PRIMEIROCONTATO" },
+    { label: "Promoção", value: "PROMOCAO" },
+  ];
+
   function onSave() {
     if (uuid) {
-      axios
-        .put(`http://localhost:8081/template/${uuid}`, template)
-        .then((response) => {
-          toastSave();
-          refresh();
-        });
+      MSEmail.put(`/template/${uuid}`, template).then((response) => {
+        toastSave();
+        refresh();
+      });
     } else {
-      axios
-        .post("http://localhost:8081/template", template)
-        .then((response) => {
-          toastSave();
-          refresh();
-        });
+      MSEmail.post("/template", template).then((response) => {
+        toastSave();
+        refresh();
+      });
     }
   }
 
@@ -100,16 +109,37 @@ export default function ModalAdicionarTemplate({
           <ModalCloseButton />
           <ModalBody>
             <Box display={"flex"} flexDir={"column"}>
-              <Box mb={"5"}>
-                <Input
-                  placeholder="Nome"
-                  value={template.nomeTemplate}
-                  onChange={(e) =>
-                    setTemplate({ ...template, nomeTemplate: e.target.value })
-                  }
-                />
-              </Box>
+              <SimpleGrid columns={2} spacing={5} mb={"5"}>
+                <Box w={"full"}>
+                  <Input
+                    placeholder="Nome"
+                    value={template.nomeTemplate}
+                    onChange={(e) =>
+                      setTemplate({ ...template, nomeTemplate: e.target.value })
+                    }
+                  />
+                </Box>
+                <Box w={"full"}>
+                  <SelectPadrao
+                    onChange={(e) =>
+                      setTemplate({ ...template, tipoTemplate: e.target.value })
+                    }
+                    options={selectTipoTemplate}
+                    placeHolder="Tipo Template"
+                    value={template.tipoTemplate}
+                  />
+                </Box>
+              </SimpleGrid>
               <Box>
+                <TemplateVariaveis tipoTemplate={template.tipoTemplate} />
+                <Input
+                  mb={"5"}
+                  placeholder="Titulo"
+                  onChange={(e) =>
+                    setTemplate({ ...template, tipoTemplate: e.target.value })
+                  }
+                  value={template.tituloTemplate}
+                />
                 <Textarea
                   placeholder="Template"
                   value={template?.template}

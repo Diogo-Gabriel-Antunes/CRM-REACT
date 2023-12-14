@@ -4,9 +4,17 @@ export interface IConfiguracaoEmail {
   username: string;
   password: string;
   host: string;
-  stpmPort: string;
-  sslSupport: boolean;
+  stmpPort: string;
+  sslSupport: boolean | string;
 }
+
+export const configuracaoEmailDefault: IConfiguracaoEmail = {
+  host: "",
+  password: "",
+  sslSupport: false,
+  stmpPort: "",
+  username: "",
+};
 
 export function createTableStructureConfiguracaoEmail(
   configuracoes: IConfiguracaoEmail[]

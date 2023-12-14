@@ -5,52 +5,30 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Select,
   useToast,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
+import { TableComponent } from "../../components/table";
+import { Search2Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { IMateriaPrima } from "../../../model/materiaPrima";
-import { TableComponent, TableOptions } from "../../../components/table";
-import API from "../../../API";
-import ModalAdicionarProduto from "../modalAdicionar";
-import ModalAdicionarMateriaPrima from "./ModalAdicionarMateriaPrima";
+import API from "../../API";
+import ModalAdicionarPromocao from "./ModalAdicionarPromocao";
+import { IPromocao, createTableStructurePromocao } from "../../model/promocao";
 
-export default function MateriaPrimaCadastrarHome() {
+export default function PromocaoCadastrarHome() {
   const toast = useToast();
   const [uuid, setUuid] = useState("");
-  const [materiaPrima, setMateriaPrima] = useState<IMateriaPrima[]>([]);
+  const [promocao, setPromocao] = useState<IPromocao[]>([]);
   const [pagina, setPagina] = useState(0);
 
-  const getMateriaPrima = () => {
-    API.get(`/materia-prima?offset=${pagina}&limit=20`).then(
-      (response: any) => {
-        setMateriaPrima(response.data);
-      }
-    );
+  const getPromocoes = () => {
+    API.get(`/promocao?offset=${pagina}`).then((response) => {
+      setPromocao(response.data);
+    });
   };
   useEffect(() => {
-    getMateriaPrima();
+    getPromocoes();
   }, [pagina]);
-  const tableStructere: TableOptions = {
-    data: materiaPrima,
-    headers: ["Nome", "Quantidade Em Estoque"],
-    options: [
-      {
-        headerOption: "Nome",
-        listOption: "nome",
-      },
-      {
-        headerOption: "Quantidade Em Estoque",
-        listOption: "quantidadeEstoque",
-      },
-    ],
-    title: "Materia Prima",
-  };
+  const tableStructere = createTableStructurePromocao(promocao);
   return (
     <>
       <Box>
@@ -64,11 +42,11 @@ export default function MateriaPrimaCadastrarHome() {
             >
               <Box>
                 <Box>
-                  <ModalAdicionarMateriaPrima refresh={getMateriaPrima} />
-                  <ModalAdicionarMateriaPrima
+                  <ModalAdicionarPromocao refresh={getPromocoes} />
+                  <ModalAdicionarPromocao
                     editar
                     uuid={uuid}
-                    refresh={getMateriaPrima}
+                    refresh={getPromocoes}
                   />
                   <Button
                     mr={"5"}
@@ -76,20 +54,19 @@ export default function MateriaPrimaCadastrarHome() {
                     variant={"outline"}
                     onClick={() => {
                       if (uuid) {
-                        API.delete("/produto/" + uuid).then((response: any) => {
+                        API.delete("/promocao/" + uuid).then((response) => {
                           toast({
                             duration: 3000,
                             colorScheme: "green",
                             description: "Produto deletado com sucesso",
                           });
-                          getMateriaPrima();
+                          getPromocoes();
                         });
                       }
                     }}
                   >
                     Excluir
                   </Button>
-                  .
                 </Box>
               </Box>
 
@@ -115,7 +92,7 @@ export default function MateriaPrimaCadastrarHome() {
                 setUuid={setUuid}
                 pagina={pagina}
                 setPagina={setPagina}
-                refresh={getMateriaPrima}
+                refresh={getPromocoes}
               />
             </Box>
           </Box>

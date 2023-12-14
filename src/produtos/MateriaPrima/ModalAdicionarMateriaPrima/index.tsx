@@ -19,12 +19,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import { IProduto, produtoDefault } from "../../../../model/produto";
-import API from "../../../../API";
+import { IProduto, produtoDefault } from "../../../model/produto";
+import API from "../../../API";
 import {
   IMateriaPrima,
   materiaPrimaDefault,
-} from "../../../../model/materiaPrima";
+} from "../../../model/materiaPrima";
 
 interface Props {
   uuid?: string;

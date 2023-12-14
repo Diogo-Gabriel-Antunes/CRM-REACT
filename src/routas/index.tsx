@@ -19,9 +19,11 @@ import AgendaFunilHome from "../agenda/funil";
 import AgendaConfiguracoesHome from "../agenda/configuracoes";
 import DragDropHome from "../dragDrop";
 import ProdutoCadastrarHome from "../produtos/cadastrar";
-import MateriaPrimaCadastrarHome from "../produtos/cadastrar/MateriaPrima";
+import MateriaPrimaCadastrarHome from "../produtos/MateriaPrima";
 import EmailCadastrarHome from "../email/cadastrar";
 import ConfiguracoesEmailHome from "../email/configuracoes";
+import EnviarEmailHome from "../email/enviarEmail";
+import PromocaoCadastrarHome from "../produtos/promocao";
 
 export default function AppRoutes() {
   return (
@@ -93,6 +95,16 @@ export default function AppRoutes() {
               }
             />{" "}
             <Route
+              path="produto/promocao"
+              element={
+                IsAuthenticate() ? (
+                  <PromocaoCadastrarHome />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />{" "}
+            <Route
               path="email/cadastrar"
               element={
                 IsAuthenticate() ? (
@@ -110,6 +122,12 @@ export default function AppRoutes() {
                 ) : (
                   <Navigate to={"/"} />
                 )
+              }
+            />
+            <Route
+              path="email/enviar-email"
+              element={
+                IsAuthenticate() ? <EnviarEmailHome /> : <Navigate to={"/"} />
               }
             />
           </Routes>
