@@ -24,6 +24,7 @@ import EmailCadastrarHome from "../email/cadastrar";
 import ConfiguracoesEmailHome from "../email/configuracoes";
 import EnviarEmailHome from "../email/enviarEmail";
 import PromocaoCadastrarHome from "../produtos/promocao";
+import PedidoHome from "../pedido";
 
 export default function AppRoutes() {
   return (
@@ -128,6 +129,12 @@ export default function AppRoutes() {
               path="email/enviar-email"
               element={
                 IsAuthenticate() ? <EnviarEmailHome /> : <Navigate to={"/"} />
+              }
+            />
+            <Route
+              path="pedido/visualizar"
+              element={
+                IsAuthenticate() ? <PedidoHome /> : <Navigate to={"/"} />
               }
             />
           </Routes>

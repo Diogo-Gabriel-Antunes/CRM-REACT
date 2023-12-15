@@ -35,6 +35,7 @@ export default function MenuBar({ children }: { children: ReactNode }) {
   const [dragDrop, setDragDrop] = useState();
   const [produto, setProduto] = useState();
   const [email, setEmail] = useState();
+  const [pedidos, setPedidos] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = useRef();
@@ -73,12 +74,19 @@ export default function MenuBar({ children }: { children: ReactNode }) {
       setEmail(response.data);
     });
   }
+
+  function getPedidos() {
+    API.get<Tabs[]>("/menu/pedidos").then((response: AxiosResponse) => {
+      setPedidos(response.data);
+    });
+  }
   if (!cliente && !agenda && !dragDrop) {
     getClientes();
     getAgenda();
     getDragDrop();
     getProduto();
     getEmail();
+    getPedidos();
   }
 
   return (
@@ -125,6 +133,7 @@ export default function MenuBar({ children }: { children: ReactNode }) {
             <TabsComponent title="Drag Drop" tabs={dragDrop!} />
             <TabsComponent title="Produto" tabs={produto!} />
             <TabsComponent title="Email" tabs={email!} />
+            <TabsComponent title="Pedidos" tabs={pedidos!} />
           </Box>
         </Box>
         <Box></Box>
